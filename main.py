@@ -25,6 +25,6 @@ def load_dataset() -> prior.DatasetDict:
         with gzip.open(f"procthor_100k_balanced_{split}.jsonl.gz", "r") as f:
             tasks = [line for line in tqdm(f, desc=f"Loading {split}")]
         data[split] = LazyJsonDataset(
-            data=tasks, dataset="procthor-100k-objectnav-eval", split=split
+            data=tasks, dataset="procthor-100k-eval", split=split
         )
     return prior.DatasetDict(**data)
