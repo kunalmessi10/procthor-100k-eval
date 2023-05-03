@@ -21,6 +21,7 @@ def load_dataset() -> prior.DatasetDict:
             urllib.request.urlretrieve(
                 url, "./procthor_100k_objectnav_{}.jsonl.gz".format(split)
             )
+        print ('gets here?')
         with gzip.open(f"procthor_100k_objectnav_{split}.jsonl.gz", "r") as f:
             tasks = [line for line in tqdm(f, desc=f"Loading {split}")]
         data[split] = LazyJsonDataset(
