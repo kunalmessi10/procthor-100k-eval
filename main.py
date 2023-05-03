@@ -13,11 +13,11 @@ except:
 def load_dataset() -> prior.DatasetDict:
     """Load the houses dataset."""
     data = {}
-    # for split, size in zip(("val", "test"), (100_000, 1_000, 1_000)):
+    # TODO: Add a test set later on
 
     for split in ["val"]:
         if not f"procthor_100k_objectnav_{split}.jsonl.gz" in os.listdir("./"):
-            url = f"https://prior-datasets.s3.us-east-2.amazonaws.com/procthor_100k_eval-kunal/procthor_100k_objectnav_val.jsonl.gz"
+            url = f"https://prior-datasets.s3.us-east-2.amazonaws.com/procthor_100k_eval-kunal/procthor_100k_objectnav_{split}.jsonl.gz"
             urllib.request.urlretrieve(
                 url, "./procthor_100k_objectnav_{}.jsonl.gz".format(split)
             )
