@@ -18,7 +18,7 @@ def load_dataset() -> prior.DatasetDict:
     for split in ("val"):
 
         if not f"procthor100k_objectnav_{split}.jsonl.gz" in os.listdir("./"):
-            url = f"https://prior-datasets.s3.us-east-2.amazonaws.com/procthor_100k_eval-kunal/procthor_100k_balanced_{split}.jsonl.gz"
+            url = f" https://prior-datasets.s3.us-east-2.amazonaws.com/procthor_100k_eval-kunal/procthor_100k_objectnav_{split}.jsonl.gz"
             urllib.request.urlretrieve(
                 url, "./procthor_100k_balanced_{}.jsonl.gz".format(split)
             )
