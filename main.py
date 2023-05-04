@@ -18,21 +18,26 @@ def load_dataset() -> prior.DatasetDict:
     )
 
     for split in ["val", "test"]:
-        split_task_list = []
         for task in ["objectnav", "fetch2room", "objexplore"]:
-            if not f"procthor_100k_{task}_{split}.jsonl.gz" in os.listdir("./"):
+            filename = f"procthor_100k_{task}_{split}.jsonl.gz"
+            print(filename)
+            if not filename in os.listdir("./"):
+                split_task_list = []
                 try:
                     response = urllib.request.urlopen(base_url)
                     urllib.request.urlretrieve(
-                        base_url,
-                        "procthor_100k_{}_{}.jsonl.gz".format(task, split),
+                        base_url + filename,
+                        "./" + filename,
                     )
                 except urllib.error.URLError as e:
                     print(f"Error: {task} for {split} not found")
                     continue
-            with gzip.open(f"procthor_100k_{task}_{split}.jsonl.gz", "r") as f:
+
+            with gzip.open(filename, "r") as f:
                 tasks = [line for line in tqdm(f, desc=f"Loading {split}")]
+
             split_task_list = split_task_list + tasks
+
         data[split] = LazyJsonDataset(
             data=split_task_list, dataset="procthor-100k-eval", split=split
         )
