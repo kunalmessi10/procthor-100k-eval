@@ -25,7 +25,7 @@ def load_dataset() -> prior.DatasetDict:
                     response = urllib.request.urlopen(base_url)
                     urllib.request.urlretrieve(
                         base_url,
-                        "./procthor_100k_{}_{}.jsonl.gz".format(task, split),
+                        "procthor_100k_{}_{}.jsonl.gz".format(task, split),
                     )
                 except urllib.error.URLError as e:
                     print(f"Error: {task} for {split} not found")
@@ -33,7 +33,7 @@ def load_dataset() -> prior.DatasetDict:
             with gzip.open(f"procthor_100k_{task}_{split}.jsonl.gz", "r") as f:
                 tasks = [line for line in tqdm(f, desc=f"Loading {split}")]
             split_task_list.append(tasks)
-            data[split] = LazyJsonDataset(
-                data=split_task_list, dataset="procthor-100k-eval", split=split
-            )
+        data[split] = LazyJsonDataset(
+            data=split_task_list, dataset="procthor-100k-eval", split=split
+        )
     return prior.DatasetDict(**data)
