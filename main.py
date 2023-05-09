@@ -17,7 +17,7 @@ def load_dataset() -> prior.DatasetDict:
 
     for split in ["val", "test"]:
         split_task_list = []
-        for task in ["objectnav", "fetch2room", "objectexplore"]:
+        for task in ["objectnavtype", "fetch2roomtype", "exploreobjects"]:
             filename = f"minival_procthor_100k_{task}_{split}.jsonl.gz"
             print(filename)
             if not filename in os.listdir("./"):
