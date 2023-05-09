@@ -13,16 +13,14 @@ except:
 def load_dataset() -> prior.DatasetDict:
     """Load the houses dataset."""
     data = {}
-    base_url = (
-        "https://prior-datasets.s3.us-east-2.amazonaws.com/procthor_100k_v01_benchmark/"
-    )
+    base_url = "https://prior-datasets.s3.us-east-2.amazonaws.com/procthor_100k_v01_benchmark/minival/"
 
     for split in ["val", "test"]:
-        for task in ["objectnav", "fetch2room", "objexplore"]:
+        split_task_list = []
+        for task in ["objectnav", "fetch2room", "objectexplore"]:
             filename = f"procthor_100k_{task}_{split}.jsonl.gz"
             print(filename)
             if not filename in os.listdir("./"):
-                split_task_list = []
                 try:
                     response = urllib.request.urlopen(base_url)
                     urllib.request.urlretrieve(
@@ -36,7 +34,7 @@ def load_dataset() -> prior.DatasetDict:
             with gzip.open(filename, "r") as f:
                 tasks = [line for line in tqdm(f, desc=f"Loading {split}")]
 
-            split_task_list = split_task_list + tasks
+            split_task_list.extend(tasks)
 
         data[split] = LazyJsonDataset(
             data=split_task_list, dataset="procthor-100k-eval", split=split
