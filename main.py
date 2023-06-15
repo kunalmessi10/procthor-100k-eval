@@ -14,7 +14,7 @@ def load_dataset() -> prior.DatasetDict:
     for split in ["val", "test"]:
         split_task_list = []
         for task in ["objectnavtype", "fetch2roomtype", "explorehouse"]:
-            filename = f"minival_June8_procthor_100k_{task}_{split}.jsonl.gz"
+            filename = f"tinyval_June8_procthor_100k_{task}_{split}.jsonl.gz"
             print(filename)
             try:
                 with gzip.open(filename, "r") as f:
