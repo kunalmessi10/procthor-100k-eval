@@ -25,6 +25,6 @@ def load_dataset() -> prior.DatasetDict:
                 continue
 
         data[split] = LazyJsonDataset(
-            data=tasks, dataset="procthor-100k-eval", split=split
+            data=split_task_list, dataset="procthor-100k-eval", split=split
         )
     return prior.DatasetDict(**data)
