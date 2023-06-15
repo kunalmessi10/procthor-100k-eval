@@ -1,8 +1,6 @@
 import gzip
-import os
 from tqdm import tqdm
 import prior
-import urllib.request
 
 try:
     from prior import LazyJsonDataset
@@ -13,18 +11,20 @@ except:
 def load_dataset() -> prior.DatasetDict:
     """Load the houses dataset."""
     data = {}
-    # for split, size in zip(("val", "test"), (100_000, 1_000, 1_000)):
+    for split in ["val", "test"]:
+        split_task_list = []
+        for task in ["objectnavtype", "fetch2roomtype", "explorehouse"]:
+            filename = f"minival_June8_procthor_100k_{task}_{split}.jsonl.gz"
+            print(filename)
+            try:
+                with gzip.open(filename, "r") as f:
+                    tasks = [line for line in tqdm(f, desc=f"Loading {split}")]
+                split_task_list.extend(tasks)
+            except:
+                print(f"Error: {task} for {split} not found")
+                continue
 
-    for split in ("val"):
-
-        if not f"procthor100k_objectnav_{split}.jsonl.gz" in os.listdir("./"):
-            url = f"https://prior-datasets.s3.us-east-2.amazonaws.com/procthor_100k_eval-kunal/procthor_100k_balanced_{split}.jsonl.gz"
-            urllib.request.urlretrieve(
-                url, "./procthor_100k_balanced_{}.jsonl.gz".format(split)
-            )
-        with gzip.open(f"procthor_100k_balanced_{split}.jsonl.gz", "r") as f:
-            tasks = [line for line in tqdm(f, desc=f"Loading {split}")]
         data[split] = LazyJsonDataset(
-            data=tasks, dataset="procthor-100k-objectnav-eval", split=split
+            data=tasks, dataset="procthor-100k-eval", split=split
         )
     return prior.DatasetDict(**data)
